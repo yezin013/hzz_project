@@ -1,0 +1,397 @@
+/* Main Container */
+.container {
+    padding: 120px 20px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/한지흰색.jpg') repeat;
+    background-size: 300px;
+    opacity: 0.8;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 0 10px;
+    position: relative;
+    z-index: 10;
+}
+
+.title {
+    font-size: 2.2rem;
+    color: #4e342e;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+}
+
+.writeButton {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.writeButton:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4);
+}
+
+/* 🆕 Strict Grid Layout (Refined) - More compact */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    /* Reduced gap for more compact layout */
+    padding: 20px 0;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    /* Very subtle shadow */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 🆕 4:3 Aspect Ratio */
+.imageArea {
+    width: 100%;
+    padding-top: 75%;
+    position: relative;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.cardImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-out;
+}
+
+.card:hover .cardImage {
+    transform: scale(1.03);
+    /* Subtle zoom */
+}
+
+/* 🆕 Overlay (Subtle Darken only, no text) */
+.cardOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.03);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card:hover .cardOverlay {
+    opacity: 1;
+}
+
+/* 🆕 Content Area - More compact */
+.cardContent {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardTitle {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.3px;
+}
+
+/* 🆕 Text Preview - More compact */
+.cardPreview {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.4em;
+}
+
+.cardMeta {
+    font-size: 0.75rem;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f8f8f8;
+    padding-top: 10px;
+    margin-top: auto;
+    font-weight: 500;
+}
+
+.rating {
+    color: #FFB300;
+    /* Softer Gold */
+    font-weight: 700;
+}
+
+/* Modal Styles (Unchanged mostly) */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    animation: fadeIn 0.3s ease;
+}
+
+.modalContent {
+    background: #fff;
+    width: 100%;
+    max-width: 1100px;
+    height: 85vh;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: scaleUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.modalImageSection {
+    flex: 1.5;
+    background: #0d0d0d;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.fullImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modalInfoSection {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background: #fff;
+    position: relative;
+}
+
+.closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #f5f5f5;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.closeButton:hover {
+    background: #e0e0e0;
+    transform: rotate(90deg);
+}
+
+.modalTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #333;
+    margin: 0 0 10px;
+}
+
+.modalMeta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 0.95rem;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modalBody {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 30px;
+    white-space: pre-wrap;
+}
+
+.modalChart {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.tagGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+.tag {
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.modalActions {
+    position: sticky;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.viewProductBtn {
+    background: #4e342e;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.viewProductBtn:hover {
+    background: #3e2723;
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Grid */
+@media (max-width: 1400px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 960px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modalContent {
+        flex-direction: column;
+        height: 100vh;
+        max-width: 100%;
+        border-radius: 0;
+    }
+
+    .modalImageSection {
+        height: 40vh;
+        flex: none;
+    }
+
+    .modalInfoSection {
+        flex: none;
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

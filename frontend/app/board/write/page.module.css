@@ -1,0 +1,310 @@
+/* Clean Modern Write Page Styles */
+
+.container {
+    padding: 120px 20px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #fdfbf7;
+    /* Very light warm grey/beige */
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 2rem;
+    color: #2b2b2b;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Form Structure */
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s;
+}
+
+.section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.sectionHeader {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sectionHeader span {
+    color: #8d6e63;
+    /* Icon color */
+}
+
+/* Input Fields */
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background: #fafafa;
+    color: #333;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: #8d6e63;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+}
+
+.textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Chips / Tags */
+.chipContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    padding: 10px 16px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid #eee;
+    background: white;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chip:hover {
+    background: #f5f5f5;
+}
+
+.chipActive {
+    background: #8d6e63;
+    color: white;
+    border-color: #8d6e63;
+    box-shadow: 0 4px 10px rgba(141, 110, 99, 0.2);
+}
+
+/* Star Rating */
+.starRating {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.star {
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #eee;
+    transition: all 0.2s;
+}
+
+.star.active {
+    color: #FFB300;
+    transform: scale(1.1);
+}
+
+/* Slider / Flavor Profile */
+.flavorGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+}
+
+.flavorItem {
+    text-align: center;
+}
+
+.flavorLabel {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.dotContainer {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    background: #f5f5f5;
+    padding: 8px;
+    border-radius: 20px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dot.active {
+    background: #8d6e63;
+}
+
+/* Submit Button */
+.submitButton {
+    width: 100%;
+    padding: 16px;
+    background: #2b2b2b;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin-top: 20px;
+}
+
+.submitButton:hover {
+    background: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Autocomplete */
+.autocompleteDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    list-style: none;
+    padding: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.autocompleteItem {
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.autocompleteItem:hover {
+    background: #f5f5f5;
+}
+
+/* Image Preview */
+.imagePreview {
+    margin-top: 20px;
+    text-align: center;
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 16px;
+
+}
+
+/* Auth Card Styles */
+.authCard {
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.authIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.authTitle {
+    color: #3e2723;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.authDescription {
+    color: #5d4037;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.authButton {
+    background: #8d6e63;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.3);
+}
+
+.authButton:hover {
+    background: #6d4c41;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(141, 110, 99, 0.4);
+}

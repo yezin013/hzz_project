@@ -1,0 +1,16 @@
+# Serverless Framework
+.serverless/
+node_modules/
+*.zip
+.requirements/
+.requirements.zip
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# Environment
+.env

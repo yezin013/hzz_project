@@ -1,0 +1,387 @@
+/* Modern Traditional Layout for My Page */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px;
+    /* Top padding for fixed header */
+    min-height: 100vh;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    background-color: #fdfcf8;
+    /* Warm off-white background */
+    box-sizing: border-box;
+}
+
+/* Auth Overlay - Glassmorphic */
+.authOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.authCard {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 3rem;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    max-width: 400px;
+    width: 90%;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.authIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.authTitle {
+    color: #3e2723;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.authDescription {
+    color: #5d4037;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.authButton {
+    background: #8d6e63;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.3);
+}
+
+.authButton:hover {
+    background: #6d4c41;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(141, 110, 99, 0.4);
+}
+
+/* Profile Header - The Hero Section */
+.profileHeader {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.profileDecoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(141, 110, 99, 0.05), transparent 70%);
+    pointer-events: none;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #8d6e63, #a1887f);
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(141, 110, 99, 0.3);
+    border: 4px solid rgba(255, 255, 255, 0.8);
+}
+
+.profileInfo {
+    flex: 1;
+}
+
+.profileName {
+    font-size: 2rem;
+    color: #3e2723;
+    margin: 0 0 5px 0;
+    font-weight: 800;
+}
+
+.profileEmail {
+    color: #8d8d8d;
+    margin: 0 0 20px 0;
+    font-size: 1rem;
+}
+
+.statsRow {
+    display: flex;
+    gap: 40px;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #5d4037;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    color: #a1887f;
+    font-weight: 500;
+}
+
+/* Tab Navigation */
+.tabsContainer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 0;
+}
+
+.tabButton {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    color: #999;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.tabButton:hover {
+    color: #5d4037;
+}
+
+.tabButton.active {
+    color: #3e2723;
+}
+
+.tabButton.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #8d6e63;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Section Titles */
+.sectionTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.sectionTitle h2 {
+    font-size: 1.5rem;
+    color: #4e342e;
+    margin: 0;
+    font-weight: 700;
+}
+
+.writeButtonLink {
+    background: #8d6e63;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.2);
+}
+
+.writeButtonLink:hover {
+    background: #6d4c41;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(141, 110, 99, 0.3);
+}
+
+/* Content Grid */
+.notesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.noteCard {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.noteCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.liquorName {
+    font-size: 1.2rem;
+    color: #3e2723;
+    margin: 0 0 16px 0;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 12px;
+}
+
+.chartContainer {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 16px;
+    /* ensure chart labels don't get cut off */
+    padding: 10px;
+}
+
+.noteContent {
+    font-size: 0.95rem;
+    color: #5d4037;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    flex-grow: 1;
+    /* push actions to bottom */
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tag {
+    background: rgba(141, 110, 99, 0.1);
+    color: #6d4c41;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.editButton,
+.deleteButton {
+    background: transparent;
+    border: 1px solid #d7ccc8;
+    padding: 6px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.editButton {
+    color: #8d6e63;
+}
+
+.editButton:hover {
+    background: #efebe9;
+}
+
+.deleteButton {
+    color: #e57373;
+    border-color: #ffcdd2;
+}
+
+.deleteButton:hover {
+    background: #ffebee;
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    border: 1px dashed #d7ccc8;
+    color: #795548;
+    font-size: 1.1rem;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 80px 16px 30px;
+    }
+
+    .profileHeader {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 20px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .statsRow {
+        justify-content: center;
+    }
+
+    .tabsContainer {
+        justify-content: center;
+    }
+
+    .notesGrid {
+        grid-template-columns: 1fr;
+    }
+}

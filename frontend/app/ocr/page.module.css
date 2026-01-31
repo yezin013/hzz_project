@@ -1,0 +1,572 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    padding-top: 100px;
+    /* Space for fixed header */
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.uploadBox {
+    border: 3px dashed rgba(60, 40, 20, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.uploadBox:hover {
+    border-color: rgba(60, 40, 20, 0.5);
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.uploadBox.dragging {
+    border-color: #8d6e63;
+    border-style: solid;
+    background: rgba(141, 110, 99, 0.1);
+    transform: scale(1.02);
+}
+
+/* OCR Toggle Buttons */
+.ocrToggleContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    padding: 6px;
+    border-radius: 50px;
+    border: 1px solid rgba(141, 110, 99, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ocrToggleButton {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 40px;
+    background: transparent;
+    color: #5d4037;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.ocrToggleButton:hover {
+    background: rgba(141, 110, 99, 0.1);
+    color: #4e342e;
+}
+
+.ocrToggleButton.active {
+    background: linear-gradient(135deg, #8d6e63, #6d4c41);
+    color: white;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.3);
+}
+
+.ocrToggleButton.active::after {
+    content: '✓';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadLabel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.previewImage {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder {
+    font-size: 1.1rem;
+    color: #8d6e63;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+}
+
+.submitButton {
+    background: linear-gradient(135deg, #8d6e63, #6d4c41);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.3);
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+
+.submitButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(141, 110, 99, 0.5);
+    background: linear-gradient(135deg, #7d5e53, #5d3c31);
+}
+
+.submitButton:disabled {
+    background: #d7ccc8;
+    color: #efebe9;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Loading Screen */
+.loadingContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a1a;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loadingVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.loadingText {
+    position: absolute;
+    bottom: 15%;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    animation: pulse 1.5s infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+}
+
+/* Result Screen */
+.resultContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .card {
+        flex-direction: row;
+    }
+}
+
+.cardImageContainer {
+    flex: 1;
+    min-height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardContent {
+    flex: 1.5;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #4e342e;
+    margin: 0;
+    text-shadow: none;
+}
+
+.categoryBadge {
+    background: linear-gradient(135deg, rgba(180, 130, 80, 0.8), rgba(150, 100, 60, 0.9));
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.cardBrewery {
+    color: #795548;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.tagBadge {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cardDescription {
+    line-height: 1.6;
+    color: #5d4037;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 500px) {
+    .infoGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.infoSection {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(141, 110, 99, 0.2);
+    backdrop-filter: blur(6px);
+}
+
+.infoSection h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #4e342e;
+    border-bottom: 1px solid rgba(141, 110, 99, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.infoSection p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #5d4037;
+    word-break: keep-all;
+}
+
+.link {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.pairingSection {
+    background: rgba(255, 200, 100, 0.15);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 200, 100, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.pairingSection h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #ffd700;
+}
+
+.pairingSection p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.moreInfoButton {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, rgba(180, 130, 80, 0.7), rgba(150, 100, 60, 0.8));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(200, 160, 100, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(100, 70, 40, 0.3);
+}
+
+.moreInfoButton:hover {
+    background: linear-gradient(135deg, rgba(200, 150, 100, 0.8), rgba(170, 120, 80, 0.9));
+    border-color: rgba(220, 180, 120, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(100, 70, 40, 0.4);
+}
+
+.rawTextSection {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rawTextSection summary {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+}
+
+.rawText {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+}
+
+.noMatch {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(248, 215, 218, 0.2);
+    color: #ffa0a0;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(248, 215, 218, 0.3);
+}
+
+.retryButton {
+    background: linear-gradient(135deg, rgba(180, 130, 80, 0.7), rgba(150, 100, 60, 0.8));
+    color: white;
+    border: 1px solid rgba(200, 160, 100, 0.5);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: block;
+    margin: 0 auto;
+    backdrop-filter: blur(8px);
+    font-weight: 600;
+}
+
+.retryButton:hover {
+    background: linear-gradient(135deg, rgba(200, 150, 100, 0.8), rgba(170, 120, 80, 0.9));
+    transform: translateY(-2px);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Auth Overlay (Login Required) */
+.authOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(0px);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.authCard {
+    background: url('/한지.jpg');
+    background-size: cover;
+    padding: 60px 50px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(141, 110, 99, 0.4);
+    border: 3px solid rgba(141, 110, 99, 0.3);
+    text-align: center;
+    max-width: 500px;
+    animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.authIcon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+.authTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #4e342e;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.authDescription {
+    font-size: 1.1rem;
+    color: #6d4c41;
+    margin-bottom: 35px;
+    line-height: 1.6;
+}
+
+.authButton {
+    background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
+    color: #fff;
+    border: none;
+    padding: 18px 50px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.4);
+    letter-spacing: 1px;
+}
+
+.authButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(141, 110, 99, 0.6);
+    background: linear-gradient(135deg, #7d5e53 0%, #5d3c31 100%);
+}
+
+.authButton:active {
+    transform: translateY(-1px);
+}
+
+/* Blurred Content */
+.blurredContent {
+    filter: blur(12px);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.6;
+}

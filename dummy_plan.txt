@@ -1,0 +1,10 @@
+spec:
+  template:
+    spec:
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "ip-100-95-123-56" # Just in case
+      - ip: "0.0.0.0" # Attempt to map the Tailscale IP to localhost/all
+        hostnames:
+        - "m2"

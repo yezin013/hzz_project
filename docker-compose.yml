@@ -1,0 +1,49 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/frontend.env
+    environment:
+      - NEXTAUTH_URL=https://192.168.0.48
+      - NEXT_PUBLIC_API_URL=/api/python
+    depends_on:
+      - backend
+    networks:
+      - jumak-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/backend.env
+    volumes:
+      - ./backend:/app
+    networks:
+      - jumak-network
+      - alloy_default
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - jumak-network
+
+networks:
+  jumak-network:
+    driver: bridge
+  alloy_default:
+    external: true

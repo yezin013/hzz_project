@@ -1,0 +1,257 @@
+﻿/* Main Container - Ensures minimal height and relative positioning for children */
+.container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 80px;
+    background-color: #1a1a1a;
+    isolation: isolate;
+    /* Create new stacking context */
+}
+
+/* Background Image - Fixed position, lowest z-index */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    /* Ensure clicks pass through */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+/* Content Wrapper - Floats above background */
+.content {
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Title */
+.titleSection {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.titleIcon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Search Form - Vintage Style */
+.searchForm {
+    position: relative;
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    gap: 0;
+    z-index: 20;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+}
+
+.searchInput {
+    flex: 1;
+    height: 50px;
+    padding: 0 25px;
+    border-radius: 30px 0 0 30px;
+    border: 1px solid #d7ccc8;
+    background: #fff8e1;
+    /* Creamy paper */
+    font-size: 1rem;
+    color: #5d4037;
+    outline: none;
+}
+
+.searchButton {
+    height: 50px;
+    padding: 0 30px;
+    border-radius: 0 30px 30px 0;
+    border: none;
+    background-color: #5d4037;
+    /* Vintage Brown */
+    color: #fff8e1;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #3e2723;
+    /* Darker Brown */
+}
+
+/* Autocomplete Dropdown */
+.autocompleteDropdown {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.autocompleteItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    color: #333;
+}
+
+.autocompleteItem:hover {
+    background-color: #f5f5f5;
+}
+
+/* Grid Layout - Crucial Fix */
+.drinkGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    width: 100%;
+}
+
+/* Drink Card */
+.drinkCard {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+    /* Create stacking context */
+}
+
+.drinkCard:hover {
+    transform: translateY(-5px);
+    z-index: 2;
+}
+
+/* Image Container - Enforce Aspect Ratio */
+.drinkImageContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    /* 1:1 Aspect Ratio */
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* Fix for Next.js Image */
+.drinkImageContainer img {
+    object-fit: contain;
+    padding: 15px;
+}
+
+.drinkInfo {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.drinkName {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #222;
+    margin: 0 0 8px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.drinkMeta {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.drinkType,
+.drinkAlcohol {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    color: #666;
+}
+
+.drinkPrice {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e53935;
+    margin-top: auto;
+}
+
+.resultInfo {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.pageButton {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pageButton.active {
+    background: white;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .drinkGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}

@@ -1,0 +1,184 @@
+/* .bannerContainer {
+    position: fixed;   <-- REMOVED
+    right: 20px;       <-- REMOVED
+    top: 100px;        <-- REMOVED
+    z-index: 1000;     <-- REMOVED
+} */
+
+.bannerContainer {
+    /* Make it a static card */
+    position: relative;
+    width: 100%;
+    /* Fill container */
+    max-width: 250px;
+    /* Limit width */
+    background: rgba(255, 255, 255, 0.95);
+    /* Clean background instead of Hanji for better readability */
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    /* Soft, modern shadow */
+    color: #4e342e;
+    font-family: 'Suit', sans-serif;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+@keyframes floatBanner {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+        /* Reduced movement */
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    color: #3e2723;
+}
+
+.locationButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #616161;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+    font-weight: 600;
+}
+
+.locationButton:hover {
+    background-color: #eee;
+    color: #212121;
+}
+
+.selectGroup {
+    margin-bottom: 15px;
+}
+
+.select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-top: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #424242;
+    font-size: 0.9rem;
+}
+
+.weatherInfo {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.weatherIcon {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.temperature {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2d3436;
+    /* Modern dark grey instead of bright red */
+}
+
+.condition {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.recommendationBox {
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.keyword {
+    color: #d84315;
+    font-weight: bold;
+}
+
+/* Mobile responsive - Show with adjusted styling */
+@media (max-width: 768px) {
+    .bannerContainer {
+        max-width: 100%;
+        padding: 10px;
+        margin-bottom: 8px;
+        /* Prevent overlap by using relative position and auto z-index */
+        position: relative;
+        z-index: 1;
+        /* Make it more compact */
+        border-radius: 10px;
+    }
+
+    .title {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+
+    .locationButton {
+        padding: 5px;
+        font-size: 0.75rem;
+    }
+
+    .select {
+        padding: 4px;
+        font-size: 0.8rem;
+    }
+
+    .selectGroup {
+        margin-bottom: 10px;
+    }
+
+    .weatherInfo {
+        margin-top: 8px;
+        padding-top: 8px;
+    }
+
+    .weatherIcon {
+        margin-bottom: 3px;
+    }
+
+    .weatherIcon img {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .temperature {
+        font-size: 1rem;
+    }
+
+    .condition {
+        font-size: 0.75rem;
+    }
+
+    .recommendationBox {
+        padding: 6px;
+        font-size: 0.75rem;
+    }
+}

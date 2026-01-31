@@ -1,0 +1,6 @@
+[submodule "jumak-app-manifests"]
+	path = jumak-app-manifests
+	url = https://github.com/DZ-Chalie/jumak-app-manifests.git
+[submodule "jumak-database-manifests"]
+	path = jumak-database-manifests
+	url = https://github.com/DZ-Chalie/jumak-database-manifests.git

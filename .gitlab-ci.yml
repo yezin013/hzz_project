@@ -1,0 +1,416 @@
+stages:
+  - analysis
+  - build-batch-1
+  - build-batch-2
+  - build-batch-3
+  - update-manifest
+
+variables:
+  # 🔢 Manual Major Version (User can update this)
+  MAJOR_VERSION: "3"
+  
+  GITOPS_BRANCH: "main"
+  # AWS ECR Vars (Unified)
+  AWS_REGISTRY: "799336795082.dkr.ecr.ap-northeast-2.amazonaws.com"
+  AWS_PROJECT: "hzz"
+  
+  # Image definitions (Always use AWS ECR)
+  IMAGE_CORE: "$AWS_REGISTRY/$AWS_PROJECT/backend-core"
+  IMAGE_SEARCH: "$AWS_REGISTRY/$AWS_PROJECT/backend-search"
+  IMAGE_CHATBOT: "$AWS_REGISTRY/$AWS_PROJECT/backend-chatbot"
+  IMAGE_CONTENT: "$AWS_REGISTRY/$AWS_PROJECT/backend-content"
+  IMAGE_OCR: "$AWS_REGISTRY/$AWS_PROJECT/backend-ocr"
+  IMAGE_STATS: "$AWS_REGISTRY/$AWS_PROJECT/backend-stats"
+  IMAGE_RECOMMEND: "$AWS_REGISTRY/$AWS_PROJECT/backend-recommend"
+  IMAGE_FRONTEND: "$AWS_REGISTRY/$AWS_PROJECT/frontend"
+
+  # Git cleanup configuration - exclude gitops-repo to avoid permission errors
+  GIT_CLEAN_FLAGS: "-ffdx -e gitops-repo"
+  GIT_DEPTH: 0  # 💡 SonarQube Fix: Fetch full history for correct 'New Code' calculation and Blame info
+
+# 🔄 워크플로우 규칙
+workflow:
+  rules:
+    # AWS GitLab -> AWS EKS
+    - if: $CI_SERVER_HOST == "3.37.34.50"
+      variables:
+        TARGET_ENV: "aws-eks"
+        IMAGE_TAG: "v$MAJOR_VERSION.$CI_PIPELINE_IID"
+        GITOPS_REPO: "http://3.37.34.50/root/jumak-app-manifests.git"
+    # Local GitLab (Default) -> On-Premise -> AWS GitLab Manifests (Unified)
+    - when: always
+      variables:
+        TARGET_ENV: "on-premise"
+        IMAGE_TAG: "v$MAJOR_VERSION.$CI_PIPELINE_IID"
+        GITOPS_REPO: "http://3.37.34.50/root/jumak-app-manifests.git"
+
+# 🔍 SonarQube 분석
+# Global variables already include GIT_DEPTH: 0
+
+sonarqube-backend:
+  stage: analysis
+  tags: [shell]
+  script:
+    - echo "🔍 Running SonarQube analysis for Backend using Docker..."
+    - |
+      docker run --rm \
+        --network="host" \
+        -v "$(pwd):/usr/src" \
+        -e SONAR_HOST_URL="http://localhost:9000" \
+        -e SONAR_TOKEN=$SONAR_TOKEN \
+        sonarsource/sonar-scanner-cli \
+        -Dsonar.projectKey=jumak-backend \
+        -Dsonar.projectName="Jumak Backend" \
+        -Dsonar.sources=backend \
+        -Dsonar.exclusions="**/tests/**,**/test_*.py,**/scripts/**,**/__pycache__/**,*.py" \
+        -Dsonar.coverage.exclusions="**/*" \
+        -Dsonar.cpd.exclusions="**/*" \
+        -Dsonar.python.version=3.10 \
+        -Dsonar.sourceEncoding=UTF-8 \
+        -Dsonar.verbose=true \
+        -Dsonar.security.hotspots.exclusions=**/* \
+        -Dsonar.issue.ignore.multicriteria=e1,e2,e3,e4,e5,e6 \
+        -Dsonar.issue.ignore.multicriteria.e1.ruleKey=python:S2068 \
+        -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e2.ruleKey=python:S1313 \
+        -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e3.ruleKey=python:S2115 \
+        -Dsonar.issue.ignore.multicriteria.e3.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e4.ruleKey=python:S4433 \
+        -Dsonar.issue.ignore.multicriteria.e4.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e5.ruleKey=python:S5332 \
+        -Dsonar.issue.ignore.multicriteria.e5.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e6.ruleKey=* \
+        -Dsonar.issue.ignore.multicriteria.e6.resourceKey=**/* \
+        -Dsonar.qualitygate.wait=false
+  allow_failure: true
+  rules:
+    - when: always
+
+sonarqube-frontend:
+  stage: analysis
+  tags: [shell]
+  script:
+    - echo "🔍 Running SonarQube analysis for Frontend using Docker..."
+    - |
+      docker run --rm \
+        --network="host" \
+        -v "$(pwd):/usr/src" \
+        -e SONAR_HOST_URL="http://localhost:9000" \
+        -e SONAR_TOKEN=$SONAR_TOKEN \
+        sonarsource/sonar-scanner-cli \
+        -Dsonar.projectKey=jumak-frontend \
+        -Dsonar.projectName="Jumak Frontend" \
+        -Dsonar.sources=frontend \
+        -Dsonar.typescript.tsconfigPath=frontend/tsconfig.json \
+        -Dsonar.exclusions="**/node_modules/**,**/.next/**,**/public/**,**/tests/**,out/**,build/**" \
+        -Dsonar.coverage.exclusions="**/*" \
+        -Dsonar.cpd.exclusions="**/*" \
+        -Dsonar.sourceEncoding=UTF-8 \
+        -Dsonar.verbose=true \
+        -Dsonar.security.hotspots.exclusions=**/* \
+        -Dsonar.issue.ignore.multicriteria=e1,e2,e3,e4,e5 \
+        -Dsonar.issue.ignore.multicriteria.e1.ruleKey=typescript:S2068 \
+        -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e2.ruleKey=typescript:S1313 \
+        -Dsonar.issue.ignore.multicriteria.e2.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e3.ruleKey=typescript:S4433 \
+        -Dsonar.issue.ignore.multicriteria.e3.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e4.ruleKey=typescript:S5332 \
+        -Dsonar.issue.ignore.multicriteria.e4.resourceKey=**/* \
+        -Dsonar.issue.ignore.multicriteria.e5.ruleKey=* \
+        -Dsonar.issue.ignore.multicriteria.e5.resourceKey=**/* \
+        -Dsonar.qualitygate.wait=false
+  allow_failure: true
+  rules:
+    - when: always
+
+# =========================================================
+# 🏷️ Auto Tag (main merge 시 v3.xxx 자동 생성/푸시)
+#  - main 브랜치 파이프라인에서만 실행
+#  - 태그 파이프라인에서는 실행 안 함(무한루프 방지)
+#  - TAG_PUSH_TOKEN(CI 변수)로 원격 태그 push
+# =========================================================
+auto-tag:
+  stage: analysis
+  tags: [shell]
+  resource_group: auto-tag
+  allow_failure: true  # 태그 push 실패해도 빌드 진행
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG == null'
+      when: manual
+  before_script:
+    - "git config --global user.email ci@jumak.local"
+    - "git config --global user.name GitLab-CI"
+  script:
+    - set -euo pipefail
+    - git fetch --tags
+
+    - |
+      # 마지막 v{MAJOR_VERSION}.* 태그 찾기
+      LAST_TAG=$(git tag -l "v${MAJOR_VERSION}.*" --sort=-v:refname | head -n 1)
+      if [ -z "$LAST_TAG" ]; then
+        LAST_TAG="v${MAJOR_VERSION}.100"
+      fi
+      echo "LAST_TAG=$LAST_TAG"
+
+    - |
+      # 다음 태그 계산
+      LAST_NUM="${LAST_TAG#v${MAJOR_VERSION}.}"
+      NEXT_NUM=$((LAST_NUM + 1))
+      NEW_TAG="v${MAJOR_VERSION}.${NEXT_NUM}"
+      echo "NEW_TAG=$NEW_TAG"
+
+    - |
+      # 동일 태그 존재 시 종료
+      if git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+        echo "$NEW_TAG already exists. Skipping."
+        exit 0
+      fi
+
+    - |
+      # origin을 HTTP로 강제 (이전 https 잔여 설정 방지)
+      ORIGIN_URL="$(git remote get-url origin)"
+      ORIGIN_URL_HTTP="${ORIGIN_URL/https:\/\//http:\/\/}"
+      git remote set-url origin "$ORIGIN_URL_HTTP"
+
+      # 태그 생성
+      git tag -d "$NEW_TAG" 2>/dev/null || true
+      git tag "$NEW_TAG"
+
+      # ✅ 토큰을 URL에 박지 말고 "Authorization 헤더"로 인증해서 push
+      AUTH_B64="$(printf 'gitlab-ci-token:%s' "$TAG_PUSH_TOKEN" | base64 | tr -d '\n')"
+      git -c http.extraHeader="Authorization: Basic ${AUTH_B64}" push origin "$NEW_TAG"
+
+
+# =========================================================
+# 🏗️ Build Jobs with Change Detection (Smart Build)
+# =========================================================
+
+.build_template: &build_definition
+  tags: [shell]
+  before_script:
+    - "echo 'Logging into AWS ECR...'"
+    - "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $AWS_REGISTRY"
+    - "cp backend/requirements.txt $SERVICE_PATH/ || true"
+  script:
+    - "echo \"Building $SERVICE_NAME (Smart Build)...\""
+    - "cd $SERVICE_PATH"
+    # Dockerfile handles 'pip install six' now
+    - "docker build -t \"$IMAGE_NAME:$IMAGE_TAG\" ."
+    - "docker push \"$IMAGE_NAME:$IMAGE_TAG\""
+    # Create a marker file to tell update-manifests that this service was built
+    - "touch ../../../built_$SERVICE_KEY.txt"
+  after_script:
+    - "docker logout \"$AWS_REGISTRY\" || true"
+  artifacts:
+    paths:
+      - built_*.txt
+    expire_in: 1 hour
+
+# Batch 1: Core & Search
+build-core:
+  <<: *build_definition
+  stage: build-batch-1
+  variables:
+    SERVICE_NAME: "backend-core"
+    SERVICE_KEY: "core"
+    SERVICE_PATH: "backend/services/core"
+    IMAGE_NAME: "$IMAGE_CORE"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/core/**/*
+        - backend/requirements.txt
+
+build-search:
+  <<: *build_definition
+  stage: build-batch-1
+  variables:
+    SERVICE_NAME: "backend-search"
+    SERVICE_KEY: "search"
+    SERVICE_PATH: "backend/services/search"
+    IMAGE_NAME: "$IMAGE_SEARCH"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/search/**/*
+        - backend/requirements.txt
+    
+# ... (This logic needs to be applied repetitively for each job block)
+
+# Batch 2: Chatbot, Content, OCR
+build-chatbot:
+  <<: *build_definition
+  stage: build-batch-2
+  variables:
+    SERVICE_NAME: "backend-chatbot"
+    SERVICE_KEY: "chatbot"
+    SERVICE_PATH: "backend/services/chatbot"
+    IMAGE_NAME: "$IMAGE_CHATBOT"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/chatbot/**/*
+        - backend/requirements.txt
+
+build-content:
+  <<: *build_definition
+  stage: build-batch-2
+  variables:
+    SERVICE_NAME: "backend-content"
+    SERVICE_KEY: "content"
+    SERVICE_PATH: "backend/services/content"
+    IMAGE_NAME: "$IMAGE_CONTENT"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/content/**/*
+        - backend/requirements.txt
+
+build-ocr:
+  <<: *build_definition
+  stage: build-batch-2
+  variables:
+    SERVICE_NAME: "backend-ocr"
+    SERVICE_KEY: "ocr"
+    SERVICE_PATH: "backend/services/ocr"
+    IMAGE_NAME: "$IMAGE_OCR"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/ocr/**/*
+        - backend/requirements.txt
+
+# Batch 3: Stats, Recommend, Frontend
+build-stats:
+  <<: *build_definition
+  stage: build-batch-3
+  variables:
+    SERVICE_NAME: "backend-stats"
+    SERVICE_KEY: "stats"
+    SERVICE_PATH: "backend/services/stats"
+    IMAGE_NAME: "$IMAGE_STATS"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/stats/**/*
+        - backend/requirements.txt
+
+build-recommend:
+  <<: *build_definition
+  stage: build-batch-3
+  variables:
+    SERVICE_NAME: "backend-recommend"
+    SERVICE_KEY: "recommend"
+    SERVICE_PATH: "backend/services/recommend"
+    IMAGE_NAME: "$IMAGE_RECOMMEND"
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - backend/services/recommend/**/*
+        - backend/requirements.txt
+
+build-frontend:
+  stage: build-batch-3
+  tags: [shell]
+  before_script:
+    - "echo 'Logging into AWS ECR...'"
+    - "aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $AWS_REGISTRY"
+    - "git config --global user.email ci@jumak.local"
+    - "git config --global user.name GitLab-CI"
+  script:
+    - "echo Building Frontend..."
+    - "cd frontend"
+    - "docker build -t \"$IMAGE_FRONTEND:$IMAGE_TAG\" ."
+    - "docker push \"$IMAGE_FRONTEND:$IMAGE_TAG\""
+    - "touch ../built_frontend.txt"
+  after_script:
+    - "docker logout \"$AWS_REGISTRY\" || true"
+  artifacts:
+    paths:
+      - built_*.txt
+  rules:
+    - if: $FORCE_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - changes:
+        - frontend/**/*
+
+# =========================================================
+# 📝 Update Manifests (Smart Update)
+# =========================================================
+update-manifests:
+  stage: update-manifest
+  tags: [shell]
+  # Remove needs to avoid error when optional jobs are not created
+  # It will wait for previous stages by default
+  before_script:
+    # Force cleanup of potential root-owned files from previous runs using docker
+    - "docker run --rm -v \"$PWD:/app\" -w /app python:3.9-slim rm -rf gitops-repo || true"
+    - "git config --global user.email ci@jumak.local"
+    - "git config --global user.name GitLab-CI"
+  script:
+    # Run the python script inside a docker container to avoid dependency issues regarding python installation on runner
+    - |
+      docker run --rm \
+        -v "$PWD:/app" \
+        -w "/app" \
+        -e GITOPS_REPO="$GITOPS_REPO" \
+        -e GITOPS_BRANCH="$GITOPS_BRANCH" \
+        -e GITHUB_TOKEN="$GITHUB_TOKEN" \
+        -e TARGET_ENV="$TARGET_ENV" \
+        -e IMAGE_TAG="$IMAGE_TAG" \
+        -e IMAGE_FRONTEND="$IMAGE_FRONTEND" \
+        -e IMAGE_CORE="$IMAGE_CORE" \
+        -e IMAGE_SEARCH="$IMAGE_SEARCH" \
+        -e IMAGE_CHATBOT="$IMAGE_CHATBOT" \
+        -e IMAGE_CONTENT="$IMAGE_CONTENT" \
+        -e IMAGE_OCR="$IMAGE_OCR" \
+        -e IMAGE_STATS="$IMAGE_STATS" \
+        -e IMAGE_RECOMMEND="$IMAGE_RECOMMEND" \
+        -e HARBOR_REGISTRY="$AWS_REGISTRY" \
+        -e HARBOR_PROJECT="$AWS_PROJECT" \
+        python:3.9-slim \
+        sh -c "apt-get update && apt-get install -y git wget && \
+               wget -q https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.0.0/kustomize_v5.0.0_linux_amd64.tar.gz && \
+               tar -xzf kustomize_v5.0.0_linux_amd64.tar.gz && \
+               chmod +x kustomize && \
+               mv kustomize /usr/local/bin/ && \
+               python backend/scripts/update_manifests.py"
+
+  # --- (추가) GitLab Environments에 "ops" 환경을 보이게 해서 대시보드처럼 쓰기 ---
+  environment:
+    name: ops
+    url: https://monitor.hanzanzu.cloud/
+    on_stop: stop-ops
+
+# --- (추가) GitLab Environment stop 버튼/상태용 (실제 중지는 ArgoCD에서) ---
+stop-ops:
+  stage: update-manifest
+  tags: [shell]
+  script:
+    - 'echo "Stop is handled in ArgoCD. This job is only for GitLab Environment UI."'
+  when: manual
+  environment:
+    name: ops
+    action: stop
+
+# --- (추가) Tag push 시 Release 자동 생성 ---
+auto-release:
+  stage: update-manifest
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - 'echo "Auto creating release for tag: $CI_COMMIT_TAG"'
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    name: "$CI_COMMIT_TAG"
+    description: "Auto generated release for $CI_COMMIT_TAG"

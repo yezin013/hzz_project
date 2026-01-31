@@ -1,0 +1,69 @@
+service: jumak-ocr
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  
+  vpc:
+    securityGroupIds:
+      - sg-0b52d0265d544ebb4
+    subnetIds:
+      - subnet-0f417eaf850bff643
+      - subnet-052f52cefdc8061eb
+  
+  environment:
+    ENV: ${self:provider.stage}
+    AWS_SECRET_NAME: jumak/backend/prod
+  
+  # HTTP API 통합 Gateway
+  httpApi:
+    id: 5p1of4jt04
+    
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: 'arn:aws:secretsmanager:${self:provider.region}:*:secret:jumak/backend/*'
+
+functions:
+  api:
+    handler: handler.handler
+    timeout: 30
+    memorySize: 1024
+    provisionedConcurrency: 1
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    events:
+      - httpApi:
+          path: /api/python/ocr/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/ocr
+          method: ANY
+      - httpApi:
+          path: /api/python/ocr/health
+          method: GET
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    invalidateCaches: true
+    layer: true
+    slim: false
+    strip: false
+    zip: false
+    fileName: requirements.lambda.txt
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!__pycache__/**'
+    - '!*.pyc'

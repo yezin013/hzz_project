@@ -1,0 +1,21 @@
+spec:
+  template:
+    spec:
+      hostAliases:
+      # AWS Primary & Secondaries (Keep these!)
+      - ip: "100.124.67.102"
+        hostnames:
+        - "ip-172-32-131-128.ap-northeast-2.compute.internal"
+      - ip: "100.72.87.27"
+        hostnames:
+        - "ip-172-32-130-112.ap-northeast-2.compute.internal"
+      - ip: "100.113.76.65"
+        hostnames:
+        - "ip-172-32-137-255.ap-northeast-2.compute.internal"
+      # [NEW] Identity Trick: Map my external Tailscale IP to Localhost
+      - ip: "127.0.0.1"
+        hostnames:
+        - "local-tailscale-id" # Dummy name
+        - "100.95.123.56"      # <--- This might not work as hostname if interpreted as text.
+                               # Actually, hosts file format is: IP  hostname.
+                               # Can hostname be an IP string? Technically yes.

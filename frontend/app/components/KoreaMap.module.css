@@ -1,0 +1,266 @@
+/* KoreaMap.module.css */
+.mapContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    /* Flexible height */
+    min-height: auto;
+    transition: gap 0.5s ease;
+}
+
+@media (min-width: 769px) {
+    .mapContainer {
+        min-height: 600px;
+    }
+}
+
+/* Mobile Layout: Stack Vertically or Toggle */
+@media (max-width: 768px) {
+    .mapContainer {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+        gap: 20px;
+        overflow: visible;
+        /* Allow scrolling */
+    }
+
+    /* Reset Panel Dimensions for Mobile Stack */
+    .mapPanel {
+        width: 100%;
+        flex: none !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        transform: none !important;
+    }
+
+    /* When active, map stays on top (maybe smaller?) or just full width */
+    .mapPanel.collapsed {
+        width: 100%;
+        max-width: none !important;
+        flex: none !important;
+        margin-left: 0 !important;
+    }
+
+    .detailPanel {
+        width: 100%;
+        flex: none !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        transform: none !important;
+
+        /* Ensure it appears below map */
+        opacity: 1 !important;
+        /* Always visible if rendered? logic handles rendering? No, CSS handles opacity */
+        /* Currently detailPanel has opacity: 0 by default. */
+    }
+
+    /* Logic: active class sets opacity 1. we just need to override strict width/flex constraints */
+    .detailPanel.active {
+        width: 100%;
+        flex: none !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-top: 0;
+    }
+}
+
+.mapPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    /* Smooth eased transition */
+    overflow: hidden;
+}
+
+/* Initial State: Only Korea Map is visible and Large */
+.mapPanel.expanded {
+    flex: 0 0 100%;
+    /* Take full width initially */
+    max-width: 900px;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Active State: Korea Map shrinks and moves left */
+.mapPanel.collapsed {
+    flex: 0 0 48%;
+    max-width: 550px;
+    opacity: 1;
+    margin-left: -40px;
+    /* Push more left */
+}
+
+/* Detail Panel Animation */
+.detailPanel {
+    flex: 0 0 0;
+    /* Start with 0 width */
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateX(20px);
+}
+
+/* Active State: Detail Panel expands */
+.detailPanel.active {
+    flex: 0 0 52%;
+    max-width: 600px;
+    /* Larger to prevent clipping */
+    opacity: 1;
+    margin-left: 5px;
+    transform: translateX(0);
+    overflow: visible;
+}
+
+.mapSvg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    transition: transform 0.5s ease;
+}
+
+.province {
+    fill: #d7ccc8;
+    /* Darker subtle brown */
+    stroke: #8d6e63;
+    /* Warm brown stroke */
+    stroke-width: 1.2;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Smooth pop */
+    vector-effect: non-scaling-stroke;
+}
+
+.province:hover {
+    fill: #d7ccc8;
+    stroke: #5d4037;
+    transform: translateY(-8px) scale(1.01);
+    /* Bolder lift */
+    filter: drop-shadow(0 12px 8px rgba(93, 64, 55, 0.3));
+    /* Deep shadow for block effect */
+    z-index: 10;
+}
+
+.province.active {
+    fill: #5d4037;
+    /* Dark brown active */
+    stroke: #fff;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.2));
+}
+
+.backButton {
+    margin-bottom: 0;
+    padding: 8px 16px;
+    background: #fff;
+    color: #5d4037;
+    border: 1px solid #d7ccc8;
+    border-radius: 20px;
+    /* Rounded pill shape */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+
+.backButton:hover {
+    background: #f5f5f5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mapTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #4e342e;
+    letter-spacing: -0.5px;
+}
+
+/* Loading Video UI */
+.loadingContainer {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    /* Restrict width to prevent height explosion */
+    aspect-ratio: 4/5;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: transparent;
+}
+
+.loadingVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.6);
+    /* Crop black bars by zooming in */
+    opacity: 0.9;
+}
+
+.videoOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Inset shadow to blur edges into the background color */
+    box-shadow: inset 0 0 40px 30px #ffffff;
+    pointer-events: none;
+}
+
+/* User Guidance Overlay */
+.guideOverlay {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+    pointer-events: none;
+    /* Let clicks pass through to map */
+    animation: float 2s ease-in-out infinite;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+}
+
+.guideText {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #5d4037;
+    margin: 0;
+}
+
+.guideIcon {
+    font-size: 1.2rem;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%);
+    }
+
+    50% {
+        transform: translate(-50%, -60%);
+    }
+}

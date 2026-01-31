@@ -1,0 +1,106 @@
+service: jumak-content
+
+# Serverless Framework 설정 (버전 제약 제거)
+
+# AWS Provider 설정
+provider:
+  name: aws
+  runtime: python3.11
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  
+  # VPC 설정 (MongoDB/Redis 접근용)
+  vpc:
+    securityGroupIds:
+      - sg-0b52d0265d544ebb4
+    subnetIds:
+      - subnet-0f417eaf850bff643
+      - subnet-052f52cefdc8061eb
+  
+  # 환경변수 - 시크릿은 Secrets Manager에서 런타임에 로드
+  environment:
+    ENV: ${self:provider.stage}
+    AWS_SECRET_NAME: jumak/backend/prod
+    # 시크릿 제외 - Secrets Manager에서 로드:
+    # MONGODB_*, REDIS_*, ELASTICSEARCH_*, API_KEYS 등
+  
+  # HTTP API CORS 설정 (통합 Gateway 사용 시 개별 설정 불가)
+  httpApi:
+    id: 5p1of4jt04
+    
+  # IAM 권한
+  iam:
+    role:
+      statements:
+        # Secrets Manager 접근 권한
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: 'arn:aws:secretsmanager:${self:provider.region}:*:secret:jumak/backend/*'
+
+# Lambda 함수 정의
+functions:
+  api:
+    handler: handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    events:
+      # API Gateway HTTP API 이벤트
+      - httpApi:
+          path: /api/python/board/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/board
+          method: ANY
+      - httpApi:
+          path: /api/python/notes/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/notes
+          method: ANY
+      - httpApi:
+          path: /api/python/content/health
+          method: GET
+      - httpApi:
+          path: /api/python/favorites/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/favorites
+          method: ANY
+
+
+# 플러그인
+plugins:
+  - serverless-python-requirements
+  - serverless-dotenv-plugin
+
+# 커스텀 설정
+custom:
+  # Python 패키지 설정
+  pythonRequirements:
+    dockerizePip: true
+    layer: true
+    slim: true  # 불필요한 파일 제거
+    strip: true  # 디버그 심볼 제거
+    zip: true
+    fileName: requirements.lambda.txt  # Lambda용 최소 패키지
+    
+  # stage별 설정
+  stages:
+    dev:
+      logRetentionInDays: 7
+    prod:
+      logRetentionInDays: 30
+
+# 패키지 설정
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!.pytest_cache/**'
+    - '!__pycache__/**'
+    - '!*.pyc'
+    - '!.env'
+    - '!README.md'

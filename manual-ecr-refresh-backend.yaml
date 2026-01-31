@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ecr-refresh-manual-backend
+  namespace: jumak-backend-ns
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      serviceAccountName: ecr-refresh-sa
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: ecr-refresh
+        image: amazon/aws-cli:latest
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: access-key-id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: secret-access-key
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: region
+        command:
+        - /bin/bash
+        - -c
+        - |
+          # Install kubectl
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          mv kubectl /usr/local/bin/
+
+          # Get ECR Token
+          echo "Getting ECR login password..."
+          TOKEN=$(aws ecr get-login-password --region ap-northeast-2)
+          
+          # Delete and Recreate Secret
+          echo "Deleting old secret..."
+          kubectl delete secret regcred --ignore-not-found
+          
+          echo "Creating new secret..."
+          kubectl create secret docker-registry regcred \
+            --docker-server=799336795082.dkr.ecr.ap-northeast-2.amazonaws.com \
+            --docker-username=AWS \
+            --docker-password=$TOKEN
+          
+          echo "Done!"
+      restartPolicy: OnFailure

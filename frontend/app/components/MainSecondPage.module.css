@@ -1,0 +1,374 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* 3 columns */
+    gap: 30px;
+    padding: 60px 40px;
+    background: linear-gradient(to bottom, #fdfbf7, #f5f0eb);
+    overflow-y: auto;
+    /* Allow internal scrolling if content overflows */
+    box-sizing: border-box;
+}
+
+/* Common Card Styles */
+.leftSection,
+.middleSection,
+.rightSection {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 35px 30px;
+    box-shadow: 0 10px 40px rgba(141, 110, 99, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.leftSection:hover,
+.middleSection:hover,
+.rightSection:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(141, 110, 99, 0.12);
+}
+
+/* Animations */
+.leftSection {
+    animation: slideInLeft 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.middleSection {
+    animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards;
+}
+
+.rightSection {
+    animation: slideInRight 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Section Title */
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #4e342e;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: -0.5px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(141, 110, 99, 0.1);
+}
+
+.titleIcon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Cocktail List */
+.cocktailList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 550px;
+    padding-right: 10px;
+}
+
+.cocktailList::-webkit-scrollbar,
+.breweryList::-webkit-scrollbar,
+.awardList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cocktailList::-webkit-scrollbar-track,
+.breweryList::-webkit-scrollbar-track,
+.awardList::-webkit-scrollbar-track {
+    background: rgba(141, 110, 99, 0.05);
+    border-radius: 3px;
+}
+
+.cocktailList::-webkit-scrollbar-thumb,
+.breweryList::-webkit-scrollbar-thumb,
+.awardList::-webkit-scrollbar-thumb {
+    background: rgba(141, 110, 99, 0.3);
+    border-radius: 3px;
+}
+
+.cocktailList::-webkit-scrollbar-thumb:hover,
+.breweryList::-webkit-scrollbar-thumb:hover,
+.awardList::-webkit-scrollbar-thumb:hover {
+    background: rgba(141, 110, 99, 0.5);
+}
+
+/* Cocktail Item */
+.cocktailItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(141, 110, 99, 0.15);
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.cocktailItem:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateX(8px);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.25);
+    border-color: rgba(141, 110, 99, 0.3);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cocktail Number */
+.cocktailNumber,
+.breweryNumber {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #8d6e63, #6d4c41);
+    color: #fff8e1;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.4);
+    transition: all 0.3s;
+}
+
+.cocktailItem:hover .cocktailNumber,
+.breweryItem:hover .breweryNumber {
+    transform: rotate(360deg) scale(1.1);
+    box-shadow: 0 6px 16px rgba(141, 110, 99, 0.6);
+}
+
+/* Cocktail Name */
+.cocktailName {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #4e342e;
+    letter-spacing: 0.3px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Cocktail Arrow */
+.cocktailArrow,
+.breweryArrow {
+    font-size: 1.3rem;
+    color: #8d6e63;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.cocktailItem:hover .cocktailArrow,
+.breweryItem:hover .breweryArrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Brewery List */
+.breweryList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 550px;
+    padding-right: 10px;
+}
+
+/* Brewery Item */
+.breweryItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(141, 110, 99, 0.15);
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.breweryItem:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateX(8px);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.25);
+    border-color: rgba(141, 110, 99, 0.3);
+}
+
+/* Brewery Info */
+.breweryInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.breweryName {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #4e342e;
+    letter-spacing: 0.3px;
+}
+
+.breweryRegion {
+    font-size: 0.85rem;
+    color: #8d6e63;
+    font-weight: 500;
+}
+
+/* Award List */
+.awardList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: 550px;
+    padding-right: 10px;
+}
+
+/* Award Item - Optimized for vertical images */
+.awardItem {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(141, 110, 99, 0.15);
+    box-shadow: 0 6px 24px rgba(141, 110, 99, 0.15);
+    animation: scaleIn 0.6s ease-out backwards;
+}
+
+.awardItem:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.awardItem:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.awardItem:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.awardItem:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(141, 110, 99, 0.3);
+    border-color: rgba(141, 110, 99, 0.3);
+}
+
+/* Award Image Wrapper - Increased height for vertical images */
+.awardImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    /* Increased from 400px */
+    background: #fff;
+}
+
+/* Award Year Badge */
+.awardYear {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #d4a574, #c49a6c);
+    padding: 10px 28px;
+    border-radius: 25px;
+    font-weight: 800;
+    color: #fff;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 16px rgba(212, 165, 116, 0.5);
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.awardItem:hover .awardYear {
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 6px 24px rgba(212, 165, 116, 0.7);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        /* Stack vertically on smaller screens */
+        padding: 30px 20px;
+    }
+
+    .leftSection,
+    .middleSection,
+    .rightSection {
+        max-height: 400px;
+    }
+}

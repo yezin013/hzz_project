@@ -1,0 +1,265 @@
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.loading {
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 5rem;
+}
+
+/* Result Screen Styles (Reused from OCR) */
+.resultContainer {
+    margin-top: 0;
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+    .resultContainer {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.card {
+    background: url('/한지.jpg');
+    background-size: cover;
+    border: 1px solid #d7ccc8;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.5s ease-out;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .card {
+        flex-direction: row;
+    }
+}
+
+.cardImageContainer {
+    flex: 1;
+    min-height: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardContent {
+    flex: 1.5;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #4e342e;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.categoryBadge {
+    background: linear-gradient(135deg, rgba(180, 130, 80, 0.8), rgba(150, 100, 60, 0.9));
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.cardBrewery {
+    color: #795548;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.tagBadge {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cardDescription {
+    line-height: 1.6;
+    color: #5d4037;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 500px) {
+    .infoGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.infoSection {
+    background: url('/한지흰색.jpg') repeat;
+    background-size: 200px;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(141, 110, 99, 0.2);
+    backdrop-filter: blur(6px);
+}
+
+.infoSection h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #4e342e;
+    border-bottom: 1px solid rgba(141, 110, 99, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.infoSection p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #5d4037;
+    word-break: keep-all;
+}
+
+.link {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.pairingSection {
+    background: rgba(255, 200, 100, 0.15);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 200, 100, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.pairingSection h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #ffd700;
+}
+
+.pairingSection p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.moreInfoButton {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, rgba(180, 130, 80, 0.7), rgba(150, 100, 60, 0.8));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(200, 160, 100, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(100, 70, 40, 0.3);
+}
+
+.moreInfoButton:hover {
+    background: linear-gradient(135deg, rgba(200, 150, 100, 0.8), rgba(170, 120, 80, 0.9));
+    border-color: rgba(220, 180, 120, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(100, 70, 40, 0.4);
+}
+
+.backButton {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    transition: background 0.3s;
+}
+
+.backButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

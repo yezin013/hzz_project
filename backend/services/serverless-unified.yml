@@ -1,0 +1,203 @@
+service: jumak-api-gateway
+
+# 통합 API Gateway - 모든 Lambda 서비스를 하나의 API Gateway로 연결
+# 개별 서비스들은 이 API Gateway를 공유합니다
+
+provider:
+  name: aws
+  runtime: python3.11
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  
+  # VPC 설정 (MongoDB/Redis/ES 접근용)
+  vpc:
+    securityGroupIds:
+      - sg-0b52d0265d544ebb4
+    subnetIds:
+      - subnet-0f417eaf850bff643
+      - subnet-052f52cefdc8061eb
+  
+  # 공통 환경변수
+  environment:
+    ENV: ${self:provider.stage}
+    AWS_SECRET_NAME: jumak/backend/prod
+    
+  # IAM 권한
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: 'arn:aws:secretsmanager:${self:provider.region}:*:secret:jumak/backend/*'
+        - Effect: Allow
+          Action:
+            - bedrock:InvokeModel
+          Resource: '*'
+
+# HTTP API (API Gateway v2) - 더 저렴하고 빠름
+httpApi:
+  name: jumak-api-${self:provider.stage}
+  cors:
+    allowedOrigins:
+      - '*'
+    allowedHeaders:
+      - Content-Type
+      - Authorization
+    allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+
+# Lambda 함수들 - 각 서비스별로 정의
+functions:
+  # Content Service
+  content:
+    handler: services/content/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-content-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/board/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/board
+          method: ANY
+      - httpApi:
+          path: /api/python/notes/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/notes
+          method: ANY
+
+  # Chatbot Service
+  chatbot:
+    handler: services/chatbot/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-chatbot-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/chatbot/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/chatbot
+          method: ANY
+
+  # Core Service (Fair, Brewery)
+  core:
+    handler: services/core/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-core-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/fair/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/fair
+          method: ANY
+      - httpApi:
+          path: /api/python/brewery/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/brewery
+          method: ANY
+
+  # OCR Service
+  ocr:
+    handler: services/ocr/handler.handler
+    timeout: 30
+    memorySize: 1024
+    layers:
+      - ${cf:jumak-ocr-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/ocr/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/ocr
+          method: ANY
+
+  # Recommend Service
+  recommend:
+    handler: services/recommend/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-recommend-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/hansang/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/hansang
+          method: ANY
+      - httpApi:
+          path: /api/python/cocktail/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/cocktail
+          method: ANY
+
+  # Search Service
+  search:
+    handler: services/search/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-search-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/search/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/search
+          method: ANY
+
+  # Stats Service
+  stats:
+    handler: services/stats/handler.handler
+    timeout: 30
+    memorySize: 512
+    layers:
+      - ${cf:jumak-stats-${self:provider.stage}.PythonRequirementsLambdaLayerArn}
+    events:
+      - httpApi:
+          path: /api/python/weather/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/weather
+          method: ANY
+      - httpApi:
+          path: /api/python/chatbot/metrics/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api/python/chatbot/metrics
+          method: ANY
+
+  # Health Check (공통)
+  health:
+    handler: services/content/handler.handler
+    timeout: 10
+    memorySize: 256
+    events:
+      - httpApi:
+          path: /api/python/health
+          method: GET
+
+# 패키지 설정
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!.git/**'
+    - '!__pycache__/**'
+    - '!*.pyc'
+    - '!.serverless/**'
