@@ -24,7 +24,7 @@ def get_mariadb_conn():
         host=os.getenv("MARIADB_HOST", "192.168.0.182"),
         port=int(os.getenv("MARIADB_PORT", 3306)),
         user=os.getenv("MARIADB_USER", "root"),
-        password=os.getenv("MARIADB_PASSWORD", "pass123#"),
+        password=os.getenv("MARIADB_PASSWORD", ""),
         database=os.getenv("MARIADB_DB", "drink"),
         cursorclass=pymysql.cursors.DictCursor,
         charset='utf8mb4'

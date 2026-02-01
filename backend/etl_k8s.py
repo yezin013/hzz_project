@@ -21,8 +21,8 @@ def get_mariadb_conn():
     return pymysql.connect(
         host=os.getenv("MARIADB_HOST", "211.46.52.153"),
         port=int(os.getenv("MARIADB_PORT", 15432)),
-        user=os.getenv("MARIADB_USER", "team3"),
-        password=os.getenv("MARIADB_PASSWORD", "Gkrtod1@"),
+        user=os.getenv("MARIADB_USER", ""),
+        password=os.getenv("MARIADB_PASSWORD", ""),
         database=os.getenv("MARIADB_DB", "drink"),
         cursorclass=pymysql.cursors.DictCursor,
         charset='utf8mb4'
@@ -32,8 +32,8 @@ def connect_mongo():
     """MongoDB Replica Set 연결"""
     hosts = os.getenv("MONGODB_HOSTS", "mongodb-0.mongodb-headless.jumak-db-ns.svc.cluster.local,mongodb-1.mongodb-headless.jumak-db-ns.svc.cluster.local,mongodb-2.mongodb-headless.jumak-db-ns.svc.cluster.local")
     port = os.getenv("MONGODB_PORT", "27017")
-    user = os.getenv("MONGODB_USER", "root")
-    password = os.getenv("MONGODB_PASSWORD", "pass123#")
+    user = os.getenv("MONGODB_USER", "")
+    password = os.getenv("MONGODB_PASSWORD", "")
     db_name = os.getenv("MONGODB_DB", "admin")
     replica_set = os.getenv("MONGODB_REPLICA_SET", "rs0")
     
@@ -64,7 +64,7 @@ def get_es_client():
     host = os.getenv("ELASTICSEARCH_HOSTS", "elasticsearch.jumak-db-ns.svc.cluster.local")
     port = int(os.getenv("ELASTICSEARCH_PORT", 9200))
     username = os.getenv("ELASTICSEARCH_USERNAME", "elastic")
-    password = os.getenv("ELASTICSEARCH_PASSWORD", "pass123#")
+    password = os.getenv("ELASTICSEARCH_PASSWORD", "")
     
     es = Elasticsearch(
         [f"https://{host}:{port}"],
