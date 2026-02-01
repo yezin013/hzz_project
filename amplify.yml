@@ -7,7 +7,7 @@ applications:
           commands:
             - export AMPLIFY_BUILD=true
             - npm ci
-            - env | grep -e NEXTAUTH_ -e COGNITO_ -e NEXT_PUBLIC_ >> .env.production
+            - env | grep -e NEXTAUTH_ -e COGNITO_ -e NEXT_PUBLIC_ >> .env.production || true
 
         build:
           commands:

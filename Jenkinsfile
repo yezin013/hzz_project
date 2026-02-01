@@ -15,7 +15,8 @@ pipeline {
 
         // SonarQube 서버 정보
         SONARQUBE_URL = 'http://192.168.0.181:9000'
-        SONARQUBE_TOKEN = 'sqa_4ca398bbb038ee6fb87aefd540c22ac980f55e8c'
+        // Jenkins Credentials Binding을 사용하여 주입하거나 환경주입 설정 필요
+        SONARQUBE_TOKEN = credentials('sonarqube-token')
 
         // Jenkins 시스템 설정에서 정의한 SonarQube 서버 이름
         SONARQUBE_SERVER_ID = 'sonarqube-local'

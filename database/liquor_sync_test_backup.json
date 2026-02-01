@@ -1,0 +1,219 @@
+[
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de669",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-4",
+      "created_at": "2026-01-07T13:48:34.097Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.831806706Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66d",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-8",
+      "created_at": "2026-01-07T13:48:34.125Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.831871355Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66a",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-5",
+      "created_at": "2026-01-07T13:48:34.103Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.839187599Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de667",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-2",
+      "created_at": "2026-01-07T13:48:34.080Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.839248941Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66b",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-6",
+      "created_at": "2026-01-07T13:48:34.110Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.839256843Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695b2bbe79279a2c568de666",
+    "_score": 1.0,
+    "_source": {
+      "event": {
+        "ingested": "2026-01-07T19:12:52.850852862Z"
+      },
+      "note": "ping",
+      "created_at": "2026-01-05T03:10:54.164Z"
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de668",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-3",
+      "created_at": "2026-01-07T13:48:34.090Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.850913040Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66c",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-7",
+      "created_at": "2026-01-07T13:48:34.116Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.850922830Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e3daa4e44c81c208de666",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-1",
+      "created_at": "2026-01-07T11:04:09.998Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.856234967Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66f",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-10",
+      "created_at": "2026-01-07T13:48:34.139Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.856292803Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695e64324e44c81c208de66e",
+    "_score": 1.0,
+    "_source": {
+      "note": "latency-test-9",
+      "created_at": "2026-01-07T13:48:34.131Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T19:12:52.856303388Z"
+      }
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695eb69c5f419d068e8de66a",
+    "_score": 1.0,
+    "_source": {
+      "sync_lag_calc_ms": 286,
+      "note": "latency-test-now-20260107194012-5",
+      "created_at": "2026-01-07T19:40:12.546Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T20:02:29.758919945Z"
+      },
+      "sync_lag_calc_s": 0.286
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695eb69c5f419d068e8de668",
+    "_score": 1.0,
+    "_source": {
+      "sync_lag_calc_ms": 286,
+      "note": "latency-test-now-20260107194012-3",
+      "created_at": "2026-01-07T19:40:12.546Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T20:02:29.759104220Z"
+      },
+      "sync_lag_calc_s": 0.286
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695eb69c5f419d068e8de666",
+    "_score": 1.0,
+    "_source": {
+      "sync_lag_calc_ms": 292,
+      "note": "latency-test-now-20260107194012-1",
+      "created_at": "2026-01-07T19:40:12.546Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T20:02:29.759186088Z"
+      },
+      "sync_lag_calc_s": 0.292
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695eb69c5f419d068e8de667",
+    "_score": 1.0,
+    "_source": {
+      "sync_lag_calc_ms": 303,
+      "note": "latency-test-now-20260107194012-2",
+      "created_at": "2026-01-07T19:40:12.546Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T20:02:29.759245120Z"
+      },
+      "sync_lag_calc_s": 0.303
+    }
+  },
+  {
+    "_index": "liquor_sync_test",
+    "_id": "695eb69c5f419d068e8de669",
+    "_score": 1.0,
+    "_source": {
+      "sync_lag_calc_ms": 309,
+      "note": "latency-test-now-20260107194012-4",
+      "created_at": "2026-01-07T19:40:12.546Z",
+      "env": "aws-final",
+      "event": {
+        "ingested": "2026-01-07T20:02:29.759263758Z"
+      },
+      "sync_lag_calc_s": 0.309
+    }
+  }
+]
