@@ -1,4 +1,4 @@
-export { default } from "next-auth/middleware";
+// export { default } from "next-auth/middleware";
 
 export const config = {
     // 보호할 경로 지정 (Matcher)
