@@ -1,0 +1,22 @@
+version: 1
+applications:
+  - appRoot: frontend
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - export AMPLIFY_BUILD=true
+            - npm ci
+            - env | grep -e NEXTAUTH_ -e COGNITO_ -e NEXT_PUBLIC_ >> .env.production || true
+
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .next/cache/**/*
