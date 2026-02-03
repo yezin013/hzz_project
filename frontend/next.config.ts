@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // Docker 빌드는 standalone, Amplify는 기본 SSR 사용
-  // Amplify에서 안정적인 정적 배포를 위해 export 모드 사용
-  output: "export",
+  // Amplify SSR 모드 (API 라우트 지원)
+  // output: "export",
 
   // Amplify 호환성을 위한 설정
   experimental: {
