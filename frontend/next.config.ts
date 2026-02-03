@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // Docker 빌드는 standalone, Amplify는 기본 SSR 사용
-  // Docker & Amplify 모두 standalone 모드 권장
-  output: "standalone",
+  // Docker 빌드는 standalone, Amplify는 기본 SSR 사용
+  // output: "standalone",
 
   // Amplify 호환성을 위한 설정
   experimental: {
